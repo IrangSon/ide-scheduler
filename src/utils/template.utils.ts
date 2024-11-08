@@ -1,11 +1,11 @@
-export const messageTemplate = (branchName: string) => ({
+export const messageTemplate = (text: string) => ({
   text: "fallback",
   blocks: [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `${branchName} 브랜치가 생성되었습니다!`,
+        text,
       },
     },
     {

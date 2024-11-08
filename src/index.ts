@@ -1,8 +1,8 @@
 import "dotenv/config";
 import cron from "node-cron";
 import { startOfDay } from "date-fns";
-import { formatDate, isThreeWeekInterval } from "./utils";
-import { createPushBranch } from "./scheduler";
+import { formatDate, isThreeWeekInterval, isSixWeekInterval } from "./utils";
+import { createPushQaBranch, sendVaporVersionUpMessageToSlack } from "./scheduler";
 
 let baseDate = startOfDay(new Date("2024-05-06"));
 
@@ -12,12 +12,16 @@ cron.schedule("0 0 * * 1", async () => {
 
   if (isThreeWeekInterval(baseDate, now)) {
     try {
-      await createPushBranch(formatDate(now));
+      await createPushQaBranch(formatDate(now));
       console.log("success==================");
     } catch (err) {
       console.log("err==================");
     } finally {
       baseDate = now;
     }
+  }
+    
+  if (isThreeWeekInterval(baseDate, now)) {
+    sendVaporVersionUpMessageToSlack();
   }
 });
